@@ -1,9 +1,14 @@
 name: ci
 
 on:
+  push:
+    branches:
+      - ci/**
+      - feature/**
   pull_request:
     branches:
       - main
+  workflow_dispatch: {}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -23,10 +28,13 @@ jobs:
         with:
           submodules: recursive
       - uses: ./.github/actions/setup-macos
-      - parallel:
-          - run: make lint
-          - run: make inspect-dependencies
-      - run: make build-app
+      - name: Lint
+        run: make lint
+      - name: Inspect dependencies
+        run: make inspect-dependencies
+      - name: Build app
+        run: make build-app
         env:
           XCODEBUILD_FLAGS: -showBuildTimingSummary
-      - run: make test
+      - name: Test
+        run: make test
