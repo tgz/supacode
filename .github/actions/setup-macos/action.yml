@@ -30,7 +30,10 @@ runs:
     - name: Authenticate with Tuist
       if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
       shell: bash
-      run: mise exec -- tuist auth login
+      run: |
+        if ! mise exec -- tuist auth login; then
+          echo "::warning::Tuist auth login failed; continuing without Tuist Cloud authentication."
+        fi
     - name: Xcode cache key
       shell: bash
       run: |
