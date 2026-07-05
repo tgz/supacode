@@ -36,6 +36,7 @@ public enum OpenBehavior: Equatable, Sendable {
 
   case workspace(configuration: WorkspaceConfiguration? = nil)
   case process(ProcessExecutable, args: [Argument])
+  case urlScheme(String)
 
   public static let `default`: Self = .workspace(configuration: nil)
 }
@@ -64,6 +65,8 @@ public enum OpenWorktreeAction: CaseIterable, Identifiable {
   case editor
   case finder
   case cursor
+  case trae
+  case traeCN
   case githubDesktop
   case fork
   case gitkraken
@@ -103,6 +106,8 @@ public enum OpenWorktreeAction: CaseIterable, Identifiable {
     case .androidStudio: "Android Studio"
     case .antigravity: "Antigravity"
     case .cursor: "Cursor"
+    case .trae: "Trae"
+    case .traeCN: "Trae CN"
     case .githubDesktop: "GitHub Desktop"
     case .gitkraken: "GitKraken"
     case .gitup: "GitUp"
@@ -138,10 +143,10 @@ public enum OpenWorktreeAction: CaseIterable, Identifiable {
     switch self {
     case .finder: "Finder"
     case .editor: "$EDITOR"
-    case .alacritty, .androidStudio, .antigravity, .cursor, .fork, .githubDesktop, .gitkraken,
-      .gitup, .ghostty, .goland, .intellij, .intellijEAP, .kitty, .nova, .pycharm, .rider, .rubymine,
-      .rustrover, .smartgit, .sourcetree, .sublimeMerge, .terminal, .vscode, .vscodeInsiders,
-      .vscodium, .warp, .webstorm, .wezterm, .windsurf, .xcode, .zed, .zedPreview:
+    case .alacritty, .androidStudio, .antigravity, .cursor, .fork, .githubDesktop, .gitkraken, .gitup,
+      .ghostty, .goland, .intellij, .intellijEAP, .kitty, .nova, .pycharm, .rider, .rubymine,
+      .rustrover, .smartgit, .sourcetree, .sublimeMerge, .terminal, .trae, .traeCN, .vscode,
+      .vscodeInsiders, .vscodium, .warp, .webstorm, .wezterm, .windsurf, .xcode, .zed, .zedPreview:
       title
     }
   }
@@ -161,10 +166,10 @@ public enum OpenWorktreeAction: CaseIterable, Identifiable {
     switch self {
     case .finder, .editor:
       return true
-    case .alacritty, .androidStudio, .antigravity, .cursor, .fork, .githubDesktop, .gitkraken,
-      .gitup, .ghostty, .goland, .intellij, .intellijEAP, .kitty, .nova, .pycharm, .rider, .rubymine,
-      .rustrover, .smartgit, .sourcetree, .sublimeMerge, .terminal, .vscode, .vscodeInsiders,
-      .vscodium, .warp, .webstorm, .wezterm, .windsurf, .xcode, .zed, .zedPreview:
+    case .alacritty, .androidStudio, .antigravity, .cursor, .fork, .githubDesktop, .gitkraken, .gitup,
+      .ghostty, .goland, .intellij, .intellijEAP, .kitty, .nova, .pycharm, .rider, .rubymine,
+      .rustrover, .smartgit, .sourcetree, .sublimeMerge, .terminal, .trae, .traeCN, .vscode,
+      .vscodeInsiders, .vscodium, .warp, .webstorm, .wezterm, .windsurf, .xcode, .zed, .zedPreview:
       return NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundleIdentifier) != nil
     }
   }
@@ -177,6 +182,8 @@ public enum OpenWorktreeAction: CaseIterable, Identifiable {
     case .androidStudio: "android-studio"
     case .antigravity: "antigravity"
     case .cursor: "cursor"
+    case .trae: "trae"
+    case .traeCN: "trae-cn"
     case .fork: "fork"
     case .githubDesktop: "github-desktop"
     case .gitkraken: "gitkraken"
@@ -216,6 +223,8 @@ public enum OpenWorktreeAction: CaseIterable, Identifiable {
     case .androidStudio: "com.google.android.studio"
     case .antigravity: "com.google.antigravity"
     case .cursor: "com.todesktop.230313mzl4w4u92"
+    case .trae: "com.trae.app"
+    case .traeCN: "cn.trae.app"
     case .fork: "com.DanPristupov.Fork"
     case .githubDesktop: "com.github.GitHubClient"
     case .gitkraken: "com.axosoft.gitkraken"
@@ -257,8 +266,8 @@ public enum OpenWorktreeAction: CaseIterable, Identifiable {
       ]
     case .alacritty, .androidStudio, .antigravity, .cursor, .editor, .finder, .fork, .githubDesktop,
       .gitkraken, .gitup, .ghostty, .goland, .intellij, .intellijEAP, .kitty, .nova, .pycharm, .rider,
-      .rubymine, .rustrover, .smartgit, .sourcetree, .sublimeMerge, .terminal, .vscode,
-      .vscodeInsiders, .vscodium, .warp, .webstorm, .wezterm, .windsurf, .zed, .zedPreview:
+      .rubymine, .rustrover, .smartgit, .sourcetree, .sublimeMerge, .terminal, .trae, .traeCN,
+      .vscode, .vscodeInsiders, .vscodium, .warp, .webstorm, .wezterm, .windsurf, .zed, .zedPreview:
       [.default]
     }
   }
@@ -283,6 +292,10 @@ public enum OpenWorktreeAction: CaseIterable, Identifiable {
         ),
         .default,
       ]
+    case .trae:
+      [.urlScheme("trae")]
+    case .traeCN:
+      [.urlScheme("trae-cn")]
     case .alacritty, .antigravity, .cursor, .editor, .finder, .fork, .githubDesktop, .gitkraken, .gitup,
       .ghostty, .kitty, .nova, .smartgit, .sourcetree, .sublimeMerge, .terminal, .vscode, .vscodeInsiders,
       .vscodium, .warp, .wezterm, .windsurf, .xcode:
@@ -314,6 +327,38 @@ public enum OpenWorktreeAction: CaseIterable, Identifiable {
     default:
       return nil
     }
+  }
+
+  public func fileSchemeURL(
+    for targetURL: URL,
+    line: Int? = nil,
+    column: Int? = nil
+  ) -> URL? {
+    switch self {
+    case .trae:
+      Self.fileSchemeURL(scheme: "trae", targetURL: targetURL, line: line, column: column)
+    case .traeCN:
+      Self.fileSchemeURL(scheme: "trae-cn", targetURL: targetURL, line: line, column: column)
+    default:
+      nil
+    }
+  }
+
+  public static func fileSchemeURL(
+    scheme: String,
+    targetURL: URL,
+    line: Int? = nil,
+    column: Int? = nil
+  ) -> URL? {
+    var pathAllowed = CharacterSet.urlPathAllowed
+    pathAllowed.remove(charactersIn: ":")
+    let path = targetURL.path(percentEncoded: false)
+    let encodedPath = path.addingPercentEncoding(withAllowedCharacters: pathAllowed) ?? path
+    var urlString = "\(scheme)://file\(encodedPath)"
+    if let line, let column {
+      urlString += ":\(line):\(column)"
+    }
+    return URL(string: urlString)
   }
 
   /// The bundled CLI binary name (under `Contents/Resources/app/bin/`) for the
@@ -357,6 +402,8 @@ public enum OpenWorktreeAction: CaseIterable, Identifiable {
 
   public static let editorPriority: [OpenWorktreeAction] = [
     .cursor,
+    .trae,
+    .traeCN,
     .zed,
     .zedPreview,
     .vscode,

@@ -21,6 +21,50 @@ struct OpenWorktreeActionTests {
     #expect(settingsIDs.contains("pycharm"))
   }
 
+  @Test func traeVariantsHaveExpectedMetadataAndURLSchemeOpenBehavior() {
+    let variants: [
+      (action: OpenWorktreeAction, title: String, settingsID: String, bundleID: String, scheme: String)
+    ] = [
+      (.trae, "Trae", "trae", "com.trae.app", "trae"),
+      (.traeCN, "Trae CN", "trae-cn", "cn.trae.app", "trae-cn"),
+    ]
+
+    for variant in variants {
+      #expect(variant.action.title == variant.title)
+      #expect(variant.action.labelTitle == variant.title)
+      #expect(variant.action.settingsID == variant.settingsID)
+      #expect(variant.action.bundleIdentifier == variant.bundleID)
+      #expect(variant.action.openTargets == [.default])
+      #expect(variant.action.openBehaviors == [.urlScheme(variant.scheme)])
+    }
+  }
+
+  @Test func traeVariantsAreListedWithEditors() {
+    let editors = OpenWorktreeAction.editorPriority
+    let menuSettingsIDs = OpenWorktreeAction.menuOrder.map(\.settingsID)
+
+    #expect(editors.contains(.trae))
+    #expect(editors.contains(.traeCN))
+    #expect(menuSettingsIDs.contains("trae"))
+    #expect(menuSettingsIDs.contains("trae-cn"))
+  }
+
+  @Test func traeVariantsBuildProjectAndFileURLs() {
+    let projectURL = URL(fileURLWithPath: "/tmp/My Project")
+    let fileURL = URL(fileURLWithPath: "/tmp/My Project/Sources/App:Main.swift")
+
+    #expect(OpenWorktreeAction.trae.fileSchemeURL(for: projectURL)?.absoluteString == "trae://file/tmp/My%20Project")
+    #expect(
+      OpenWorktreeAction.traeCN.fileSchemeURL(for: projectURL)?.absoluteString
+        == "trae-cn://file/tmp/My%20Project"
+    )
+    #expect(
+      OpenWorktreeAction.trae.fileSchemeURL(for: fileURL, line: 12, column: 3)?.absoluteString
+        == "trae://file/tmp/My%20Project/Sources/App%3AMain.swift:12:3"
+    )
+    #expect(OpenWorktreeAction.cursor.fileSchemeURL(for: projectURL) == nil)
+  }
+
   @Test func jetBrainsIDEsHaveCorrectBundleIdentifiers() {
     #expect(OpenWorktreeAction.androidStudio.bundleIdentifier == "com.google.android.studio")
     #expect(OpenWorktreeAction.goland.bundleIdentifier == "com.jetbrains.goland")
