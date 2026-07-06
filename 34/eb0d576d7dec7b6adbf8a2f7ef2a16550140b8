@@ -1,0 +1,23 @@
+.github/workflows/main.yml
+  s_62ccf8119eb2ec::t_4c6a563aaf43dc 84-85,105-146,171-174,190,192-217,219,224-226,245,268,278,288,290-294,296-300,302-307,310,351,425,442,567
+supacodeTests/OpenWorktreeActionTests.swift
+  s_62ccf8119eb2ec::t_aa7bb0759b2d95 8-15,33-48
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.5",
+  "base_commit_sha": "34eb0d576d7dec7b6adbf8a2f7ef2a16550140b8",
+  "prompts": {},
+  "sessions": {
+    "s_62ccf8119eb2ec": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f363f-476e-7ef2-a7b3-fa2865b252ab",
+        "model": "unknown"
+      },
+      "human_author": "邱士川 <qiushichuan@bytedance.com>"
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {}
+}
