@@ -5,6 +5,14 @@ import Testing
 @testable import supacode
 
 struct OpenWorktreeActionTests {
+  private struct TraeVariantExpectation {
+    let action: OpenWorktreeAction
+    let title: String
+    let settingsID: String
+    let bundleID: String
+    let scheme: String
+  }
+
   @Test func menuOrderIncludesExpectedWorkspaceActions() {
     let settingsIDs = OpenWorktreeAction.menuOrder.map(\.settingsID)
 
@@ -22,11 +30,22 @@ struct OpenWorktreeActionTests {
   }
 
   @Test func traeVariantsHaveExpectedMetadataAndURLSchemeOpenBehavior() {
-    let variants: [(action: OpenWorktreeAction, title: String, settingsID: String, bundleID: String, scheme: String)] =
-      [
-        (.trae, "Trae", "trae", "com.trae.app", "trae"),
-        (.traeCN, "Trae CN", "trae-cn", "cn.trae.app", "trae-cn"),
-      ]
+    let variants = [
+      TraeVariantExpectation(
+        action: .trae,
+        title: "Trae",
+        settingsID: "trae",
+        bundleID: "com.trae.app",
+        scheme: "trae"
+      ),
+      TraeVariantExpectation(
+        action: .traeCN,
+        title: "Trae CN",
+        settingsID: "trae-cn",
+        bundleID: "cn.trae.app",
+        scheme: "trae-cn"
+      ),
+    ]
 
     for variant in variants {
       #expect(variant.action.title == variant.title)
