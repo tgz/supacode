@@ -1,0 +1,21 @@
+.github/actions/setup-macos/action.yml
+  s_e5181f6c00bf34::t_12912010f3ee99 33-36
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.5",
+  "base_commit_sha": "26c04b724a739ad517f1bf81503d71928b6f780a",
+  "prompts": {},
+  "sessions": {
+    "s_e5181f6c00bf34": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f3212-b0c2-7a02-b50f-571787083f9f",
+        "model": "unknown"
+      },
+      "human_author": "邱士川 <qiushichuan@bytedance.com>"
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {}
+}
