@@ -22,12 +22,11 @@ struct OpenWorktreeActionTests {
   }
 
   @Test func traeVariantsHaveExpectedMetadataAndURLSchemeOpenBehavior() {
-    let variants: [
-      (action: OpenWorktreeAction, title: String, settingsID: String, bundleID: String, scheme: String)
-    ] = [
-      (.trae, "Trae", "trae", "com.trae.app", "trae"),
-      (.traeCN, "Trae CN", "trae-cn", "cn.trae.app", "trae-cn"),
-    ]
+    let variants: [(action: OpenWorktreeAction, title: String, settingsID: String, bundleID: String, scheme: String)] =
+      [
+        (.trae, "Trae", "trae", "com.trae.app", "trae"),
+        (.traeCN, "Trae CN", "trae-cn", "cn.trae.app", "trae-cn"),
+      ]
 
     for variant in variants {
       #expect(variant.action.title == variant.title)
@@ -299,6 +298,8 @@ struct OpenWorktreeActionTests {
       (.vscodeInsiders, "code-insiders"),
       (.vscodium, "codium"),
       (.cursor, "cursor"),
+      (.trae, "trae"),
+      (.traeCN, "trae-cn"),
       (.windsurf, "windsurf"),
       (.antigravity, "antigravity"),
     ]
@@ -318,6 +319,8 @@ struct OpenWorktreeActionTests {
       .vscodeInsiders,
       .vscodium,
       .cursor,
+      .trae,
+      .traeCN,
       .windsurf,
       .antigravity,
     ]
@@ -336,6 +339,8 @@ struct OpenWorktreeActionTests {
       .vscodeInsiders,
       .vscodium,
       .cursor,
+      .trae,
+      .traeCN,
       .windsurf,
       .antigravity,
     ]
@@ -369,6 +374,8 @@ struct OpenWorktreeActionTests {
       .vscodeInsiders,
       .vscodium,
       .cursor,
+      .trae,
+      .traeCN,
       .windsurf,
       .antigravity,
     ]
@@ -401,6 +408,8 @@ struct OpenWorktreeActionTests {
       .vscodeInsiders,
       .vscodium,
       .cursor,
+      .trae,
+      .traeCN,
       .windsurf,
       .antigravity,
     ]
@@ -416,6 +425,8 @@ struct OpenWorktreeActionTests {
       .vscodeInsiders,
       .vscodium,
       .cursor,
+      .trae,
+      .traeCN,
       .windsurf,
       .antigravity,
     ]

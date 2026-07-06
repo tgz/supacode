@@ -313,7 +313,7 @@ public enum OpenWorktreeAction: CaseIterable, Identifiable {
         executable: .appRelativePath("Contents/MacOS/cli"),
         arguments: [Self.zedSSHURL(host: host, remotePath: remotePath)]
       )
-    case .vscode, .vscodeInsiders, .vscodium, .cursor, .windsurf, .antigravity:
+    case .vscode, .vscodeInsiders, .vscodium, .cursor, .trae, .traeCN, .windsurf, .antigravity:
       // VS Code parses `ssh-remote+host:2222` as a literal hostname, so it has no
       // inline port syntax (microsoft/vscode-remote-release #515): a non-default
       // port is inexpressible, so return `nil`. The path is a literal positional
@@ -370,6 +370,8 @@ public enum OpenWorktreeAction: CaseIterable, Identifiable {
     case .vscodeInsiders: "code-insiders"
     case .vscodium: "codium"
     case .cursor: "cursor"
+    case .trae: "trae"
+    case .traeCN: "trae-cn"
     case .windsurf: "windsurf"
     case .antigravity: "antigravity"
     default: nil
