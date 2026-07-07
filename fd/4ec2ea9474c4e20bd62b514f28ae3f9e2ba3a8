@@ -1,0 +1,23 @@
+SupacodeSettingsShared/Domain/OpenWorktreeAction.swift
+  s_62ccf8119eb2ec::t_860c737f426e2a 295-296
+supacodeTests/OpenWorktreeActionTests.swift
+  s_62ccf8119eb2ec::t_65960c672a6db0 31,37,43,53
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.5",
+  "base_commit_sha": "fd4ec2ea9474c4e20bd62b514f28ae3f9e2ba3a8",
+  "prompts": {},
+  "sessions": {
+    "s_62ccf8119eb2ec": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f363f-476e-7ef2-a7b3-fa2865b252ab",
+        "model": "unknown"
+      },
+      "human_author": "邱士川 <qiushichuan@bytedance.com>"
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {}
+}
