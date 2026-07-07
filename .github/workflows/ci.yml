@@ -1,9 +1,14 @@
 name: ci
 
 on:
+  push:
+    branches:
+      - ci/**
+      - feature/**
   pull_request:
     branches:
       - main
+  workflow_dispatch: {}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -23,10 +28,49 @@ jobs:
         with:
           submodules: recursive
       - uses: ./.github/actions/setup-macos
-      - parallel:
-          - run: make lint
-          - run: make inspect-dependencies
-      - run: make build-app
+        with:
+          disable-tools: spm:swiftlang/swift-format
+      - name: Lint
+        run: make lint
+      - name: Inspect dependencies
+        run: make inspect-dependencies
+      - name: Build app
+        run: make build-app
         env:
           XCODEBUILD_FLAGS: -showBuildTimingSummary
-      - run: make test
+      - name: Build debug DMG
+        run: |
+          set -euo pipefail
+
+          SETTINGS_JSON="$(xcodebuild -workspace supacode.xcworkspace -scheme supacode -configuration Debug -showBuildSettings -json -skipMacroValidation)"
+          APP_PATH="$(python3 -c 'import json, pathlib, sys; settings = json.load(sys.stdin)[0]["buildSettings"]; print(pathlib.Path(settings["BUILT_PRODUCTS_DIR"]) / settings["FULL_PRODUCT_NAME"])' <<< "$SETTINGS_JSON")"
+          if [ ! -d "$APP_PATH" ]; then
+            echo "::error::Built app not found at $APP_PATH"
+            exit 1
+          fi
+
+          mkdir -p build
+          rm -f build/*.dmg
+          mise exec -- create-dmg "$APP_PATH" build/ \
+            --overwrite \
+            --no-code-sign \
+            --dmg-title="Supacode Debug"
+
+          shopt -s nullglob
+          dmg_outputs=(build/*.dmg)
+          if [ "${#dmg_outputs[@]}" -eq 0 ]; then
+            echo "::error::create-dmg did not produce a DMG in build/"
+            exit 1
+          fi
+          if [ "${dmg_outputs[0]}" != "build/supacode-debug.dmg" ]; then
+            mv "${dmg_outputs[0]}" build/supacode-debug.dmg
+          fi
+      - name: Upload debug DMG
+        uses: actions/upload-artifact@v6
+        with:
+          name: supacode-debug-dmg
+          path: build/supacode-debug.dmg
+          if-no-files-found: error
+          retention-days: 14
+      - name: Test
+        run: make test
