@@ -10,7 +10,6 @@ struct OpenWorktreeActionTests {
     let title: String
     let settingsID: String
     let bundleID: String
-    let scheme: String
   }
 
   @Test func menuOrderIncludesExpectedWorkspaceActions() {
@@ -29,21 +28,19 @@ struct OpenWorktreeActionTests {
     #expect(settingsIDs.contains("pycharm"))
   }
 
-  @Test func traeVariantsHaveExpectedMetadataAndURLSchemeOpenBehavior() {
+  @Test func traeVariantsHaveExpectedMetadataAndDefaultOpenBehavior() {
     let variants = [
       TraeVariantExpectation(
         action: .trae,
         title: "Trae",
         settingsID: "trae",
-        bundleID: "com.trae.app",
-        scheme: "trae"
+        bundleID: "com.trae.app"
       ),
       TraeVariantExpectation(
         action: .traeCN,
         title: "Trae CN",
         settingsID: "trae-cn",
-        bundleID: "cn.trae.app",
-        scheme: "trae-cn"
+        bundleID: "cn.trae.app"
       ),
     ]
 
@@ -53,7 +50,7 @@ struct OpenWorktreeActionTests {
       #expect(variant.action.settingsID == variant.settingsID)
       #expect(variant.action.bundleIdentifier == variant.bundleID)
       #expect(variant.action.openTargets == [.default])
-      #expect(variant.action.openBehaviors == [.urlScheme(variant.scheme)])
+      #expect(variant.action.openBehaviors == [.default])
     }
   }
 
@@ -65,22 +62,6 @@ struct OpenWorktreeActionTests {
     #expect(editors.contains(.traeCN))
     #expect(menuSettingsIDs.contains("trae"))
     #expect(menuSettingsIDs.contains("trae-cn"))
-  }
-
-  @Test func traeVariantsBuildProjectAndFileURLs() {
-    let projectURL = URL(fileURLWithPath: "/tmp/My Project")
-    let fileURL = URL(fileURLWithPath: "/tmp/My Project/Sources/App:Main.swift")
-
-    #expect(OpenWorktreeAction.trae.fileSchemeURL(for: projectURL)?.absoluteString == "trae://file/tmp/My%20Project")
-    #expect(
-      OpenWorktreeAction.traeCN.fileSchemeURL(for: projectURL)?.absoluteString
-        == "trae-cn://file/tmp/My%20Project"
-    )
-    #expect(
-      OpenWorktreeAction.trae.fileSchemeURL(for: fileURL, line: 12, column: 3)?.absoluteString
-        == "trae://file/tmp/My%20Project/Sources/App%3AMain.swift:12:3"
-    )
-    #expect(OpenWorktreeAction.cursor.fileSchemeURL(for: projectURL) == nil)
   }
 
   @Test func jetBrainsIDEsHaveCorrectBundleIdentifiers() {

@@ -36,7 +36,6 @@ public enum OpenBehavior: Equatable, Sendable {
 
   case workspace(configuration: WorkspaceConfiguration? = nil)
   case process(ProcessExecutable, args: [Argument])
-  case urlScheme(String)
 
   public static let `default`: Self = .workspace(configuration: nil)
 }
@@ -292,13 +291,9 @@ public enum OpenWorktreeAction: CaseIterable, Identifiable {
         ),
         .default,
       ]
-    case .trae:
-      [.urlScheme("trae")]
-    case .traeCN:
-      [.urlScheme("trae-cn")]
     case .alacritty, .antigravity, .cursor, .editor, .finder, .fork, .githubDesktop, .gitkraken, .gitup,
-      .ghostty, .kitty, .nova, .smartgit, .sourcetree, .sublimeMerge, .terminal, .vscode, .vscodeInsiders,
-      .vscodium, .warp, .wezterm, .windsurf, .xcode:
+      .ghostty, .kitty, .nova, .smartgit, .sourcetree, .sublimeMerge, .terminal, .trae, .traeCN, .vscode,
+      .vscodeInsiders, .vscodium, .warp, .wezterm, .windsurf, .xcode:
       [.default]
     }
   }
@@ -327,38 +322,6 @@ public enum OpenWorktreeAction: CaseIterable, Identifiable {
     default:
       return nil
     }
-  }
-
-  public func fileSchemeURL(
-    for targetURL: URL,
-    line: Int? = nil,
-    column: Int? = nil
-  ) -> URL? {
-    switch self {
-    case .trae:
-      Self.fileSchemeURL(scheme: "trae", targetURL: targetURL, line: line, column: column)
-    case .traeCN:
-      Self.fileSchemeURL(scheme: "trae-cn", targetURL: targetURL, line: line, column: column)
-    default:
-      nil
-    }
-  }
-
-  public static func fileSchemeURL(
-    scheme: String,
-    targetURL: URL,
-    line: Int? = nil,
-    column: Int? = nil
-  ) -> URL? {
-    var pathAllowed = CharacterSet.urlPathAllowed
-    pathAllowed.remove(charactersIn: ":")
-    let path = targetURL.path(percentEncoded: false)
-    let encodedPath = path.addingPercentEncoding(withAllowedCharacters: pathAllowed) ?? path
-    var urlString = "\(scheme)://file\(encodedPath)"
-    if let line, let column {
-      urlString += ":\(line):\(column)"
-    }
-    return URL(string: urlString)
   }
 
   /// The bundled CLI binary name (under `Contents/Resources/app/bin/`) for the

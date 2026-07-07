@@ -78,9 +78,6 @@ enum WorktreeOpener {
           onError(.openFailed(action, error))
           return
         }
-      case .urlScheme(let scheme):
-        openWithURLScheme(action: action, scheme: scheme, targetURL: targetURL, onError: onError)
-        return
       }
     }
     onError(
@@ -242,32 +239,6 @@ enum WorktreeOpener {
       return .launched
     } catch {
       return .failed(error)
-    }
-  }
-
-  private static func openWithURLScheme(
-    action: OpenWorktreeAction,
-    scheme: String,
-    targetURL: URL,
-    onError: @escaping @MainActor @Sendable (OpenActionError) -> Void
-  ) {
-    guard let url = OpenWorktreeAction.fileSchemeURL(scheme: scheme, targetURL: targetURL) else {
-      onError(
-        OpenActionError(
-          title: "Unable to open in \(action.title)",
-          message: "Couldn't build a \(scheme) URL for this worktree."
-        )
-      )
-      return
-    }
-    guard NSWorkspace.shared.open(url) else {
-      onError(
-        OpenActionError(
-          title: "Unable to open in \(action.title)",
-          message: "macOS couldn't open \(url.absoluteString)."
-        )
-      )
-      return
     }
   }
 
