@@ -1,0 +1,23 @@
+.github/workflows/ci.yml
+  s_e5181f6c00bf34::t_e8bf66b55eeedb 4-7,11,31-36,39-40
+.github/workflows/main.yml
+  s_e5181f6c00bf34::t_151e543389b11d 50-55,58-59,106-145,356-361
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.5",
+  "base_commit_sha": "a8adc081d0584b39e67b6544521b5b784e1f2aa8",
+  "prompts": {},
+  "sessions": {
+    "s_e5181f6c00bf34": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f3212-b0c2-7a02-b50f-571787083f9f",
+        "model": "unknown"
+      },
+      "human_author": "邱士川 <qiushichuan@bytedance.com>"
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {}
+}

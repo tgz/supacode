@@ -1,0 +1,23 @@
+.github/actions/setup-macos/action.yml
+  s_e5181f6c00bf34::t_12912010f3ee99 33-36
+supacodeTests/OpenWorktreeActionTests.swift
+  s_e5181f6c00bf34::t_d5f51aba8ee522 8-12,13-14,32-36,38-42,44
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.5",
+  "base_commit_sha": "aa75927a55b9985d813bf2f0db67dbd07fd3fd2d",
+  "prompts": {},
+  "sessions": {
+    "s_e5181f6c00bf34": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f3212-b0c2-7a02-b50f-571787083f9f",
+        "model": "unknown"
+      },
+      "human_author": "邱士川 <qiushichuan@bytedance.com>"
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {}
+}
